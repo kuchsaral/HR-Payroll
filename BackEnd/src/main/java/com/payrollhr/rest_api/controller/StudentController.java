@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.Vector;
 
 @RestController
-@RequestMapping("/api/{controller}")
+@RequestMapping("/api/student")
 public class StudentController {
 
     @Autowired
