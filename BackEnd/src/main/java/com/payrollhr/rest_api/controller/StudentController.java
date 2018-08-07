@@ -58,8 +58,21 @@ public class StudentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PostMapping("/y")
+    public ResponseEntity<?> seedData1() {
+        Vector<Student> students = new Vector<>();
+        Student student = new Student();
+        student.set_id();
+        student.name = "Kuch Saral";
+        student.test = "-test-";
+        students.add(student);
+        this.repository.saveAll(students);
+        return new ResponseEntity<>(students, HttpStatus.CREATED);
+    }
+
     @PostMapping("/x")
     public ResponseEntity<?> seedData() {
+
         Vector<Student> students = new Vector<>();
         Student student = new Student();
         student.set_id();

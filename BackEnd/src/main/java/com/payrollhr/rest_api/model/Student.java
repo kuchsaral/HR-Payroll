@@ -8,4 +8,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Student extends ModelBase  //
 {
     public String name;
+    public String test;
 }
