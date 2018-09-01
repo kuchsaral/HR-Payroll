@@ -5,9 +5,11 @@ import com.payrollhr.rest_api.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -17,6 +19,15 @@ public class StudentController {
 
     @Autowired
     StudentRepository repository;
+
+    @GetMapping("{id}")
+    public ResponseEntity<?> Get(@Valid @PathVariable UUID id) throws Exception {
+        //throw new IllegalArgumentException("The parent path cannot be null!");
+
+        var result = this.repository.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
     @GetMapping
     public ResponseEntity<?> Gets()//
@@ -29,17 +40,21 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> Add(@RequestBody Student student, UriComponentsBuilder ucBuilder) //
+    public ResponseEntity<?> Add(@Valid @RequestBody Student student, UriComponentsBuilder ucBuilder) //
     {
         if (this.repository.existsById(student.get_ID())) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+
+        //------------
+        student.set_id();
+        //------------
         student = this.repository.save(student);
         return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<?> Update(@RequestBody Student student, UriComponentsBuilder urBuilder) {
+    public ResponseEntity<?> Update(@Validated @RequestBody Student student, UriComponentsBuilder urBuilder) {
 
         if (!this.repository.existsById(student.get_ID())) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,6 +82,10 @@ public class StudentController {
         student.test = "-test-";
         students.add(student);
         this.repository.saveAll(students);
+
+        //NullAndEnumUtils.getInstance().copyProperties(power, powerForm);
+        //BeanUtilsBean b;
+
         return new ResponseEntity<>(students, HttpStatus.CREATED);
     }
 

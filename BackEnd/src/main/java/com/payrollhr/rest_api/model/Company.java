@@ -1,13 +1,22 @@
 package com.payrollhr.rest_api.model;
 
 import com.payrollhr.rest_api.data_repository.ModelBase;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.Month;
 import java.util.Date;
 
-public class Company   extends ModelBase //
+@Document(collection = "Company")
+public class Company extends ModelBase //
 {
-    //Company identification
+    //Company Identification
+
+    @Indexed(unique = true)
+    @NotNull(message = "Company Name is compulsory")
+    @NotBlank(message = "Please enter company name.")
     public String companyName;
     public String vatNumber;
     public String businessActivity;
@@ -51,5 +60,4 @@ public class Company   extends ModelBase //
     public String phoneNo_Contact_Details;
     public String faxNo_Contact_Details;
     public String email_Contact_Details;
-
 }
